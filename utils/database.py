@@ -10,7 +10,8 @@ class DB:
         self.c.execute("CREATE TABLE IF NOT EXISTS pizzas (pizza_id INTEGER PRIMARY KEY NOT NULL, name TEXT, base_price REAL, image TEXT)")
         self.c.execute("CREATE TABLE IF NOT EXISTS toppings (topping_id INTEGER PRIMARY KEY NOT NULL, name TEXT, price REAL)")
 
-        self.c.execute("CREATE TABLE IF NOT EXISTS default_pizza (pizza_id INTEGER REFERENCES pizzas(pizza_id), topping_id INTEGER REFERENCES toppings(topping_id))")
+        self.c.execute("CREATE TABLE IF NOT EXISTS default_pizza (pizza_id INTEGER REFERENCES pizzas(pizza_id),\
+         topping_id INTEGER REFERENCES toppings(topping_id))")
 
         self.c.execute("CREATE TABLE IF NOT EXISTS orders (order_id INTEGER PRIMARY KEY NOT NULL, \
             username INTEGER REFERENCES users(username), total_price REAL, datetime TEXT)")
