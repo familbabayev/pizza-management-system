@@ -6,7 +6,8 @@ from datetime import datetime
 
 db = DB("pizza.db")
 
-
+#If you don't want to have empty database at beginning,
+#uncomment the sample database instructions in main.py, run it once and comment it again.
 '''
 db.insert_user("test", "123")
 db.insert_user("a", "a")
@@ -85,15 +86,15 @@ db.insert_order_detail(2, 5, 1, 10)
 db.insert_order_detail(2, 5, 1, 8)
 db.insert_order_detail(2, 5, 1, 4)
 db.insert_order_detail(2, 5, 1, 9)
-
-
-print("All users: ", db.get_all_users())
-print("All default toppings: ",db.get_all_default_toppings())
-print("All pizzas: ",db.get_all_pizzas())
-print("All toppings: ",db.get_all_toppings())
-print("All orders: ",db.get_all_orders())
-print("All : ",db.get_all_records())
 '''
+
+#print("All users: ", db.get_all_users())
+#print("All default toppings: ",db.get_all_default_toppings())
+#print("All pizzas: ",db.get_all_pizzas())
+#print("All toppings: ",db.get_all_toppings())
+#print("All orders: ",db.get_all_orders())
+#print("All : ",db.get_all_records())
+
 
 app = App(db)
 app.geometry('800x900')
