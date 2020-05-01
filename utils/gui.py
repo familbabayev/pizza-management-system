@@ -13,8 +13,8 @@ class App(Tk):
         self._frame = None
         self.db = db
         self.switch_frame(StartPage)
-        self.title("Pizza Ordering System")
-        self.iconbitmap("C:\\Users\\famil\\OneDrive\\Desktop\\PizzaProject\\images\\pizza.ico")
+        self.title("Pizza Management System")
+        self.iconbitmap(os.getcwd() + "\images\\pizza.ico")
         self.shared_data = {"selected_pizza" : IntVar(), "pizza_obj" : list(),"username": "", "password": ""}
 
     def switch_frame(self, frame_class):
@@ -33,7 +33,7 @@ class StartPage(Frame):
         self.username = StringVar()
         self.password = StringVar()
 
-        Label(self, text="Welcome to Pizza Ordering System", font = ('',20),pady = 50).pack()
+        Label(self, text="Welcome to Pizza Management System", font = ('',20),pady = 50).pack()
 
         Label(self, text="Enter your Login credentials", font = ('',14),pady = 30).pack()
 
