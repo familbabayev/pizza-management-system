@@ -9,7 +9,7 @@ Simple project for ordering pizzas.
 * [Class diagram of Decorator Pattern](#class-diagram-of-decorator-pattern)
 
 ## General Info
-The application includes the following fuctionalities:
+The application includes the following functionalities:
 * Registration of a new user
 * Login as user and admin
 * As a user
