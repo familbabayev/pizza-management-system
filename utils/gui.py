@@ -269,7 +269,7 @@ class PizzaDetails(Frame):
         self.controller.db.c.execute("SELECT * FROM pizzas WHERE pizza_id=?", (self.controller.shared_data["selected_pizza"].get(),))
         self.selected_pizza = self.controller.db.c.fetchone()
 
-        self.controller.db.c.execute("SELECT * FROM default_pizza WHERE pizza_id=?", (self.controller.shared_data["selected_pizza"].get(),))
+        self.controller.db.c.execute("SELECT * FROM pizza_toppings WHERE pizza_id=?", (self.controller.shared_data["selected_pizza"].get(),))
         self.default_tops = self.controller.db.c.fetchall()
         
         self.vars = []

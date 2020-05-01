@@ -10,7 +10,7 @@ class DB:
         self.c.execute("CREATE TABLE IF NOT EXISTS pizzas (pizza_id INTEGER PRIMARY KEY NOT NULL, name TEXT, base_price REAL, image TEXT)")
         self.c.execute("CREATE TABLE IF NOT EXISTS toppings (topping_id INTEGER PRIMARY KEY NOT NULL, name TEXT, price REAL)")
 
-        self.c.execute("CREATE TABLE IF NOT EXISTS default_pizza (pizza_id INTEGER REFERENCES pizzas(pizza_id),\
+        self.c.execute("CREATE TABLE IF NOT EXISTS pizza_toppings (pizza_id INTEGER REFERENCES pizzas(pizza_id),\
          topping_id INTEGER REFERENCES toppings(topping_id))")
 
         self.c.execute("CREATE TABLE IF NOT EXISTS orders (order_id INTEGER PRIMARY KEY NOT NULL, \
@@ -81,11 +81,11 @@ class DB:
     ########
     def insert_default_topping(self, pizza_id, topping_id):
         with self.conn:
-            self.c.execute("INSERT INTO default_pizza VALUES (?, ?)", (pizza_id, topping_id))
+            self.c.execute("INSERT INTO pizza_toppings VALUES (?, ?)", (pizza_id, topping_id))
 
     def get_all_default_toppings(self):
         with self.conn:
-            self.c.execute("SELECT * FROM default_pizza")
+            self.c.execute("SELECT * FROM pizza_toppings")
         return self.c.fetchall()
 
     ########
