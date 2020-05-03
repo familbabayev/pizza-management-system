@@ -50,7 +50,7 @@ python3 -m pip install --upgrade pip
 python3 main.py
 ```
 ## Usage
-If you don't want to have empty database at beginning, uncomment the sample database instructions in main.py, run it once and comment it again.
+If you don't want to have empty database at beginning, uncomment the sample database instructions in main.py, run it once and comment it again. Have fun:)
 ## Relational Database diagram
 ![PizzaRelationalDatabase](https://user-images.githubusercontent.com/44068684/80802158-9ac77a00-8bbf-11ea-9c0b-1a53c72e344d.png)
 ## Class diagram of Decorator Pattern
