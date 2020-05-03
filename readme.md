@@ -29,15 +29,23 @@ Project created with:
 
 ## Setup
 1. Install python3
-2. Clone this repository
+2. Install tkinter(if you don't have). In Linux:
+```
+sudo apt-get install python3-tk
+```
+3. Clone this repository
 ```
 git clone https://github.com/familbabayev/Pizza_Management_System.git
 ```
-3. Install the requirements of this repository
+4. Install the requirements of this repository
 ```
 pip install -r requirements.txt
 ```
-4. Run main.py
+if you get error, try to upgrade your pip
+```
+python3 -m pip install --upgrade pip
+```
+5. Run main.py
 ```
 python3 main.py
 ```
