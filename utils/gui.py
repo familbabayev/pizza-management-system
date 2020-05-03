@@ -2,8 +2,8 @@ from tkinter import *
 from tkinter import messagebox
 from PIL import ImageTk, Image
 from datetime import datetime
-import os
 from utils.decorator import PizzaBuilder
+import platform
 
 class App(Tk):
     
@@ -14,7 +14,8 @@ class App(Tk):
         self.db = db
         self.switch_frame(StartPage)
         self.title("Pizza Management System")
-        self.iconbitmap(os.getcwd() + "\images\\pizza.ico")
+        if platform.system() == "Windows":
+            self.iconbitmap("images/pizza.ico")
         self.shared_data = {"selected_pizza" : IntVar(), "pizza_obj" : list(),"username": "", "password": ""}
 
     def switch_frame(self, frame_class):
@@ -180,7 +181,7 @@ class AddPizza(Frame):
         if self.name_of_pizza.get() == "" or self.base_price.get() == 0 or self.toppings.get() == "" or \
             self.topping_prices.get() == "" or self.image.get() == "":
             messagebox.showerror("Error!", "Fields cannot be empty!")
-        elif os.path.exists(os.getcwd() + "\images\\" + self.image.get()) == False or \
+        elif os.path.exists("images/" + self.image.get()) == False or \
             self.image.get().lower().endswith(('.png', '.jpg', '.jpeg')) == False:
             messagebox.showerror("Error!", "Image does not exist or does not match requirements!")
         else:
@@ -238,7 +239,7 @@ class PizzaMenu(Frame):
             self.controller.shared_data["selected_pizza"].set(pizzas[0][0])
         
         for i in range(len(pizzas)):
-            self.show_image(os.getcwd() + "\images\\" + pizzas[i][3], i)
+            self.show_image("images/" + pizzas[i][3], i)
             Radiobutton(self.frame,font = ('',10), text=pizzas[i][1] + ", " + str(pizzas[i][2]) + "$", \
                 variable = self.controller.shared_data["selected_pizza"], value = pizzas[i][0]).grid(row = i, column = 1, sticky=W)
         
