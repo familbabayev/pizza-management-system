@@ -6,19 +6,36 @@ class DB:
         self.db_file = db_file
         self.conn = sqlite3.connect(self.db_file)
         self.c = self.conn.cursor()
-        self.c.execute("CREATE TABLE IF NOT EXISTS users (username TEXT PRIMARY KEY NOT NULL, password TEXT NOT NULL, notify INTEGER)")
-        self.c.execute("CREATE TABLE IF NOT EXISTS pizzas (pizza_id INTEGER PRIMARY KEY NOT NULL, name TEXT, base_price REAL, image TEXT)")
-        self.c.execute("CREATE TABLE IF NOT EXISTS toppings (topping_id INTEGER PRIMARY KEY NOT NULL, name TEXT, price REAL)")
+        self.c.execute("""CREATE TABLE IF NOT EXISTS 
+                            users (username TEXT PRIMARY KEY NOT NULL, 
+                            password TEXT NOT NULL, 
+                            notify INTEGER)""")
 
-        self.c.execute("CREATE TABLE IF NOT EXISTS pizza_toppings (pizza_id INTEGER REFERENCES pizzas(pizza_id),\
-         topping_id INTEGER REFERENCES toppings(topping_id))")
+        self.c.execute("""CREATE TABLE IF NOT EXISTS 
+                            pizzas (pizza_id INTEGER PRIMARY KEY NOT NULL, 
+                            name TEXT, 
+                            base_price REAL, 
+                            image TEXT)""")
+                            
+        self.c.execute("""CREATE TABLE IF NOT EXISTS 
+                            toppings (topping_id INTEGER PRIMARY KEY NOT NULL, 
+                            name TEXT, 
+                            price REAL)""")
 
-        self.c.execute("CREATE TABLE IF NOT EXISTS orders (order_id INTEGER PRIMARY KEY NOT NULL, \
-            username INTEGER REFERENCES users(username), total_price REAL, datetime TEXT)")
+        self.c.execute("""CREATE TABLE IF NOT EXISTS 
+                            pizza_toppings (pizza_id INTEGER REFERENCES pizzas(pizza_id),
+                            topping_id INTEGER REFERENCES toppings(topping_id))""")
+
+        self.c.execute("""CREATE TABLE IF NOT EXISTS 
+                            orders (order_id INTEGER PRIMARY KEY NOT NULL, 
+                            username INTEGER REFERENCES users(username), 
+                            total_price REAL, datetime TEXT)""")
     
-        self.c.execute("CREATE TABLE IF NOT EXISTS order_details (order_id INTEGER REFERENCES orders(order_id), \
-            pizza_id INTEGER REFERENCES pizzas(pizza_id), amount INTEGER, \
-                topping_id INTEGER REFERENCES toppings(topping_id))")
+        self.c.execute("""CREATE TABLE IF NOT EXISTS 
+                            order_details (order_id INTEGER REFERENCES orders(order_id), 
+                            pizza_id INTEGER REFERENCES pizzas(pizza_id), 
+                            amount INTEGER,
+                            topping_id INTEGER REFERENCES toppings(topping_id))""")
     
     def insert_user(self, username, password):
         with self.conn:

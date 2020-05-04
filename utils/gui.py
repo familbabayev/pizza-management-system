@@ -3,7 +3,7 @@ from tkinter import messagebox
 from PIL import ImageTk, Image
 from datetime import datetime
 from utils.decorator import PizzaBuilder
-import platform
+import platform, os
 
 class App(Tk):
     
@@ -188,8 +188,12 @@ class AddPizza(Frame):
             self.controller.db.insert_pizza(self.name_of_pizza.get(), self.base_price.get(), self.image.get())
             self.pizza_id = self.controller.db.c.lastrowid
         
-            topping_list = self.toppings.get().split()
-            price_list = [ float(i) for i in self.topping_prices.get().split()]
+            topping_list = self.toppings.get()
+            topping_list = [ t.strip() for t in topping_list.split(",")]
+
+            price_list = self.topping_prices.get()
+            price_list = [ float(p.strip()) for p in price_list.split(",")]
+
             for i in range(len(topping_list)):
                 topping_list[i] = topping_list[i].capitalize()
 
