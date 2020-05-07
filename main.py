@@ -6,8 +6,7 @@ from datetime import datetime
 
 db = DB("pizza.db")
 
-#If you don't want to have empty database at beginning,
-#uncomment the sample database instructions in main.py, run it once and comment it again.
+#those are the sample database records already in database.
 '''
 db.insert_user("test", "123")
 db.insert_user("a", "a")
