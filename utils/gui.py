@@ -35,7 +35,6 @@ class StartPage(Frame):
         self.password = StringVar()
 
         Label(self, text="Welcome to Pizza Management System", font = ('',20),pady = 50).pack()
-
         Label(self, text="Enter your Login credentials", font = ('',14),pady = 30).pack()
 
         self.frame = Frame(self)
@@ -82,8 +81,8 @@ class RegistrationPage(StartPage):
         self.password = StringVar()
         self.re_password = StringVar()
 
-        Label(self, text="Welcome to Pizza Ordering System", font = ('',15),pady = 30).pack()
-        Label(self, text="Enter your Login credentials", font = ('',11),pady = 30).pack()
+        Label(self, text="Welcome to Pizza Management System", font = ('',20),pady = 50).pack()
+        Label(self, text="Enter your Login credentials", font = ('',14),pady = 30).pack()
 
         self.frame = Frame(self)
         self.frame.pack()
