@@ -29,7 +29,8 @@ class DB:
         self.c.execute("""CREATE TABLE IF NOT EXISTS 
                             orders (order_id INTEGER PRIMARY KEY NOT NULL, 
                             username INTEGER REFERENCES users(username), 
-                            total_price REAL, datetime TEXT)""")
+                            total_price REAL, 
+                            datetime TEXT)""")
     
         self.c.execute("""CREATE TABLE IF NOT EXISTS 
                             order_details (order_id INTEGER REFERENCES orders(order_id), 

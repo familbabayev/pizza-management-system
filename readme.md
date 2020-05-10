@@ -16,6 +16,7 @@ The application includes the following functionalities:
   * Selecting pizza and customizing toppings and quantity
   * Adding multiple pizzas to basket
   * Ordering pizza
+  * Viewing order history
 * As an admin
   * Adding new pizza
   * Viewing all orders

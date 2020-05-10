@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
+from tkinter import ttk
 from PIL import ImageTk, Image
 from datetime import datetime
 from utils.decorator import PizzaBuilder
@@ -122,26 +123,32 @@ class AdminPage(Frame):
         self.controller = controller
 
         Label(self, text="Administrator Page", font = ('',15), pady = 30).pack()
+
+        self.tree = ttk.Treeview(self)
+        self.tree['columns'] = ("User", "Order Price")
+        self.tree['height'] = 20
+        self.tree.pack()
+        self.tree.column("#0", width=150, minwidth=150, stretch = NO)
+        self.tree.column("User", width=150, minwidth=150, stretch = NO)
+        self.tree.column("Order Price", width=150, minwidth=150, stretch = NO)
+
+        self.tree.heading("#0", text="Order Date")
+        self.tree.heading("User", text="User", anchor = W)
+        self.tree.heading("Order Price", text="Order Price", anchor = W)
+
+        Label(self, text="").pack()
         Button(self, text = "Add Pizza", height="2", width="25", command = lambda: controller.switch_frame(AddPizza)).pack()
         Label(self, text="").pack()
-        Button(self, text = "View all orders", height="2", width="25", command = self.all_orders).pack()
-        Label(self, text="").pack()
+
         Button(self, text = "Go Back", height="2", width="25", command = lambda: controller.switch_frame(StartPage)).pack()
         Label(self, text="").pack()
-    
-        self.orders = self.controller.db.get_all_orders()
-        self.order_l = []
-        for i in range(len(self.orders)):
-            l = Label(self, text="", font = ('',10))
-            self.order_l.append(l)
-        self.end_l = Label(self, text = "-" * 20 + " END " + "-" * 20, font = ('',10))
-        
 
-    def all_orders(self):
-        for order, l in zip(self.orders, self.order_l):
-            l["text"] = order[3] + " - " + order[1] + " - " + str(order[2]) + " $"
-            l.pack()
-        self.end_l.pack()
+        self.load_orders()
+
+    def load_orders(self):
+        orders = self.controller.db.get_all_orders()
+        for i in range(len(orders)):
+            self.tree.insert("", "end", text = orders[i][3], values = (orders[i][1], str(orders[i][2]) + "$"))
 
 
 class AddPizza(Frame):
@@ -220,6 +227,8 @@ class PizzaMenu(Frame):
         
         Button(self, text = "Log Out", height="2", width="25", command = self.log_out).pack(side=BOTTOM)
         Label(self, text="").pack(side=BOTTOM)
+        Button(self, text = "View Order History", height="2", width="25", command = lambda: controller.switch_frame(OrderHistory)).pack(side=BOTTOM)
+        Label(self, text="").pack(side=BOTTOM)
         self.controller.db.c.execute("SELECT * FROM pizzas")
         pizzas = self.controller.db.c.fetchall()
         if pizzas != []:
@@ -252,7 +261,7 @@ class PizzaMenu(Frame):
         self.controller.switch_frame(StartPage)
 
     def myfunction(self, event):
-        self.canvas.configure(scrollregion = self.canvas.bbox("all"), width=450, height=650)
+        self.canvas.configure(scrollregion = self.canvas.bbox("all"), width=450, height=600)
 
     def show_image(self, name, i):
         self.photo = Image.open(name)
@@ -262,6 +271,75 @@ class PizzaMenu(Frame):
         self.l.img = self.image
         self.l.grid(row = i, column = 0)
         
+
+class OrderHistory(Frame):
+    def __init__(self, controller):
+        Frame.__init__(self, controller)
+        self.controller = controller
+
+        Label(self, text="Order History", font = ('',15),pady = 30).pack()
+
+        self.tree = ttk.Treeview(self)
+        self.tree['columns'] = ("Order Date", "Pizza Name", "Toppings", "Quantity", "Pizza Price", "Order Price")
+        self.tree['height'] = 20
+        self.tree.pack()
+        self.tree.column("#0", width=55, minwidth=55, stretch = NO)
+        self.tree.column("Order Date", width=115, minwidth=115, stretch = NO)
+        self.tree.column("Pizza Name", width=110, minwidth=110, stretch = NO)
+        self.tree.column("Toppings", width=300, minwidth=300, stretch = NO)
+        self.tree.column("Quantity", width=60, minwidth=60, stretch = NO)
+        self.tree.column("Pizza Price", width=70, minwidth=70, stretch = NO)
+        self.tree.column("Order Price", width=70, minwidth=70, stretch = NO)
+
+        self.tree.heading("#0", text="Order ID", anchor = W)
+        self.tree.heading("Order Date", text="Order Date", anchor = W)
+        self.tree.heading("Pizza Name", text="Pizza Name", anchor = W)
+        self.tree.heading("Toppings", text="Toppings", anchor = W)
+        self.tree.heading("Quantity", text="Quantity", anchor = W)
+        self.tree.heading("Pizza Price", text="Pizza Price", anchor = W)
+        self.tree.heading("Order Price", text="Order Price", anchor = W)
+
+        Label(self, text="").pack()
+        Button(self, text = "Go Back", height="2", width="25", command = lambda: controller.switch_frame(PizzaMenu)).pack()
+
+        self.load_history()
+
+    def load_history(self):
+        self.controller.db.c.execute("SELECT * FROM orders WHERE username=?", (self.controller.shared_data["username"],))
+        orders = self.controller.db.c.fetchall()
+
+        for order in orders:
+            self.controller.db.c.execute("SELECT * FROM order_details WHERE order_id=?", (order[0],))
+            order_detail = self.controller.db.c.fetchall()
+
+            tops = ""
+            price = 0
+            for i in range(len(order_detail)):
+                temp = order_detail[i][1]
+                tops += ", " + self.get_topping(order_detail[i][3])[0]
+                price += self.get_topping(order_detail[i][3])[1]
+                if i + 1 == len(order_detail) or (i + 1 < len(order_detail) and order_detail[i+1][1] != temp):
+                    tops = tops[2:]
+                    price += self.get_pizza(order_detail[i][1])[1]
+                    self.tree.insert("", "end", text = order[0], values = (order[3], self.get_pizza(order_detail[i][1])[0], tops,\
+                                    order_detail[i][2], str(price) + "$", str(order[2]) + "$"))
+                    tops = ""
+                    price = 0
+                    if i + 1 != len(order_detail):
+                        temp = order_detail[i+1][1]
+
+    def get_pizza(self, pizza_id):
+        self.controller.db.c.execute("SELECT * FROM pizzas WHERE pizza_id=?", (pizza_id,))
+        res = self.controller.db.c.fetchone()
+        return res[1], res[2]
+
+    def get_topping(self, topping_id):
+        self.controller.db.c.execute("SELECT * FROM toppings WHERE topping_id=?", (topping_id,))
+        res = self.controller.db.c.fetchone()
+        if res == None:
+            return "", 0
+        return res[1], res[2]
+
 
 class PizzaDetails(Frame): 
     def __init__(self, controller):

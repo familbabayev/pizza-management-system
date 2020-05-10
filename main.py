@@ -71,8 +71,8 @@ db.insert_default_topping(pizza_id5, topping_id_2)
 db.insert_default_topping(pizza_id5, topping_id_4)
 db.insert_default_topping(pizza_id5, topping_id_9)
 
-db.insert_order("test", 34.9, datetime.now().replace(microsecond=0))
-db.insert_order("a", 36, datetime.now().replace(microsecond=0))
+db.insert_order("a", 35, datetime(2020, 4, 30, 15, 41, 22))
+db.insert_order("a", 36.1, datetime(2020, 5, 2, 21, 9, 43))
 
 db.insert_order_detail(1, 1, 1, 1)
 db.insert_order_detail(1, 1, 1, 2)
